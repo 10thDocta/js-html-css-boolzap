@@ -18,7 +18,6 @@ $(function () {
     // });
 
 
-    // --------------------- TEST 
     $("#input-chat__input").keyup(function () {
 
         if (event.which == 13) {
@@ -32,6 +31,9 @@ $(function () {
                 $("#input-chat__input").val("");
                 $(".chat-info__member").html("Sta scrivendo...");
 
+                // metodo per scrollare automaticamente in basso
+                $(".active-chat").animate({ scrollTop: $(".active-chat").height() }, "fast");
+
             }
 
             var rispostaAutomatica = setTimeout(function () {
@@ -39,6 +41,10 @@ $(function () {
                 otherElement.prepend("Ciao, come stai?");
                 $(".active-chat").append(otherElement);
 
+                // metodo per scrollare automaticamente in basso
+                $(".active-chat").animate({ scrollTop: $(".active-chat").height() }, "fast");
+
+                // metodo per stampare la data dell'ultimo messaggio
                 var date = new Date();
                 var hours = date.getHours();
                 var minute = (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
@@ -50,9 +56,40 @@ $(function () {
         }
 
     });
+
+
+    // --------------------- TEST 
+    // $("#search-bar__input").on("keyup", function () {
+    //     var value = $(this).val().toLowerCase();
+
+    //     $(".chat-group *").filter(function () {
+    //         console.log($(this));
+    //         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    //     });
+    // });
+
+
+
+    // $("#search-bar__input").keyup(function () {
+    //     var value = $(this).val().toLowerCase();
+
+
+    //     if (event.which == 13) {
+    //         $(".chat-group .chat-title").filter(function () {
+
+    //             if (!$(this).text().toLowerCase().indexOf(value) == -1) {
+
+    //                 $(this).parents(".single-chat").toggle();
+    //             }
+
+
+
+
+    //         });
+    //     }
+    // });
+
     // --------------------- /TEST
-
-
 
 
 
