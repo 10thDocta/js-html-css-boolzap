@@ -1,7 +1,7 @@
 /* global $ */
 $(function () {
 
-
+    // codice per far comparire il menu dell'utente
     $("#user-menu > a").click(function () {
         var userDrop = $("#user-menu").children(".dropdown");
         $(userDrop).toggleClass("hide");
@@ -9,7 +9,7 @@ $(function () {
         $("#user-menu > a > i").toggleClass("menu-active");
     });
 
-
+    // codice per far comparire il menu della chat
     // $("#chat-menu > i").click(function () {
     //     var chatDrop = $("#chat-menu").children(".dropdown");
     //     $(chatDrop).toggleClass("hide");
@@ -18,6 +18,7 @@ $(function () {
     // });
 
 
+    // codice per ottenere il valore inserito nella casela di input della chat e stampare a video >> tramite il tasto invio
     $("#input-chat__input").keyup(function () {
 
         if (event.which == 13) {
@@ -32,6 +33,7 @@ $(function () {
     });
 
 
+    // codice per ottenere il valore inserito nella casela di input della chat e stampare a video >> cliccando sulla freccia che compare
     $("#input-chat .fa-paper-plane").click(function () {
 
         var inputValue = $("#input-chat__input").val();
@@ -43,7 +45,7 @@ $(function () {
     });
 
 
-
+    // funzione per ottenere il dato inserito dall'utente
     const userMessage = inputValue => {
         var element = $(".template > div.my-message").clone();
         element.prepend(inputValue);
@@ -55,17 +57,17 @@ $(function () {
         $(".active-chat").animate({ scrollTop: $(".active-chat").height() }, "fast");
     }
 
-
+    // funzione per generare un messaggio dopo aver stampato a video quello dell'utente
     const autoMessage = () => {
         var rispostaAutomatica = setTimeout(function () {
             var otherElement = $(".template > div.other-message").clone();
             otherElement.prepend("Ciao, come stai?");
             $(".active-chat").append(otherElement);
 
-            // metodo per scrollare automaticamente in basso
+            // codice per scrollare automaticamente in basso
             $(".active-chat").animate({ scrollTop: $(".active-chat").height() }, "fast");
 
-            // metodo per stampare la data dell'ultimo messaggio
+            // codice per stampare la data dell'ultimo messaggio
             var date = new Date();
             var hours = date.getHours();
             var minute = (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
@@ -75,41 +77,22 @@ $(function () {
         }, 2000);
     }
 
-    // --------------------- TEST 
-    // $("#search-bar__input").on("keyup", function () {
-    //     var value = $(this).val().toLowerCase();
+    // codice per la barra di ricerca
+    // ad ogni tasto rilasciato 
+    $("#search-bar__input").keyup(function () {
+        // va a leggere il valore dell'input (trasformato in minuscolo)
+        var value = $(this).val().toLowerCase();
 
-    //     $(".chat-group *").filter(function () {
-    //         console.log($(this));
-    //         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-    //     });
-    // });
-
-
-
-    // $("#search-bar__input").keyup(function () {
-    //     var value = $(this).val().toLowerCase();
-
-
-    //     if (event.which == 13) {
-    //         $(".chat-group .chat-title").filter(function () {
-
-    //             if (!$(this).text().toLowerCase().indexOf(value) == -1) {
-
-    //                 $(this).parents(".single-chat").toggle();
-    //             }
+        // tramite il metodo .filter() specifico quale selettore deve andare a cercare, in questo caso ".chat-group .chat-title"
+        $(".chat-group .chat-title").filter(function () {
+            // specifico che deve eseguire il .toggle() sull'elemento ancestrale, tramite .parents(), solamente se quello che c'è tra le parentesì è vero
+            $(this).parents(".single-chat").toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
 
 
 
-
-    //         });
-    //     }
-    // });
-
-    // --------------------- /TEST
-
-
-    // metodo per far scomparire e comparire le due differenti icone nella barra in basso per l'immissione del messaggio
+    // codice per far scomparire e comparire le due differenti icone nella barra in basso per l'immissione del messaggio
     $("#input-chat__input")
         .focusin(function () {
 
