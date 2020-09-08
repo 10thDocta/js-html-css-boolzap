@@ -36,6 +36,10 @@ i::before {
   cursor: pointer;
 }
 
+input {
+  padding: 0 10px;
+}
+
 .menu-active {
   border-radius: 50%;
   background-color: #d5d5d5;
@@ -203,12 +207,21 @@ main {
   height: 40px;
   background-color: $grey;
   display: flex;
-}
+  align-items: center;
+  position: relative;
 
-#search-bar__input {
-  width: 85%;
-  height: 30px;
-  margin: auto;
+  i {
+    position: absolute;
+    left: 50px;
+    color: #919191;
+  }
+
+  #search-bar__input {
+    width: 85%;
+    height: 30px;
+    margin: auto;
+    padding-left: 60px;
+  }
 }
 
 /* Chat group */
@@ -340,6 +353,7 @@ main {
   overflow-y: auto;
   height: calc(100% - 54px - 55px);
   font-size: 14px;
+  position: relative;
 
   & > div:first-child {
     margin-top: 20px;
@@ -373,10 +387,18 @@ main {
   height: 55px;
   width: 100%;
   display: flex;
+  justify-content: space-around;
+  align-items: center;
   position: absolute;
   bottom: 0;
   left: 0;
   background-color: $grey;
+
+  i {
+    font-size: 25px;
+    margin: 0 20px;
+    color: #919191;
+  }
 }
 
 #input-chat__input {

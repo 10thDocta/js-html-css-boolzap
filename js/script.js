@@ -25,38 +25,55 @@ $(function () {
 
             if (inputValue != "") {
 
-                var element = $(".template > div.my-message").clone();
-                element.prepend(inputValue);
-                $(".active-chat").append(element);
-                $("#input-chat__input").val("");
-                $(".chat-info__member").html("Sta scrivendo...");
-
-                // metodo per scrollare automaticamente in basso
-                $(".active-chat").animate({ scrollTop: $(".active-chat").height() }, "fast");
-
+                userMessage(inputValue);
+                autoMessage();
             }
-
-            var rispostaAutomatica = setTimeout(function () {
-                var otherElement = $(".template > div.other-message").clone();
-                otherElement.prepend("Ciao, come stai?");
-                $(".active-chat").append(otherElement);
-
-                // metodo per scrollare automaticamente in basso
-                $(".active-chat").animate({ scrollTop: $(".active-chat").height() }, "fast");
-
-                // metodo per stampare la data dell'ultimo messaggio
-                var date = new Date();
-                var hours = date.getHours();
-                var minute = (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
-
-                $(".chat-info__member").html(`Ultimo accesso alle ${hours}:${minute}`);
-
-            }, 2500);
-
         }
-
     });
 
+
+    $("#input-chat .fa-paper-plane").click(function () {
+
+        var inputValue = $("#input-chat__input").val();
+
+        if (inputValue != "") {
+            userMessage(inputValue);
+            autoMessage();
+        }
+    });
+
+
+
+    const userMessage = inputValue => {
+        var element = $(".template > div.my-message").clone();
+        element.prepend(inputValue);
+        $(".active-chat").append(element);
+        $("#input-chat__input").val("");
+        $(".chat-info__member").html("Sta scrivendo...");
+
+        // metodo per scrollare automaticamente in basso
+        $(".active-chat").animate({ scrollTop: $(".active-chat").height() }, "fast");
+    }
+
+
+    const autoMessage = () => {
+        var rispostaAutomatica = setTimeout(function () {
+            var otherElement = $(".template > div.other-message").clone();
+            otherElement.prepend("Ciao, come stai?");
+            $(".active-chat").append(otherElement);
+
+            // metodo per scrollare automaticamente in basso
+            $(".active-chat").animate({ scrollTop: $(".active-chat").height() }, "fast");
+
+            // metodo per stampare la data dell'ultimo messaggio
+            var date = new Date();
+            var hours = date.getHours();
+            var minute = (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
+
+            $(".chat-info__member").html(`Ultimo accesso alle ${hours}:${minute}`);
+
+        }, 2000);
+    }
 
     // --------------------- TEST 
     // $("#search-bar__input").on("keyup", function () {
@@ -92,7 +109,20 @@ $(function () {
     // --------------------- /TEST
 
 
+    // metodo per far scomparire e comparire le due differenti icone nella barra in basso per l'immissione del messaggio
+    $("#input-chat__input")
+        .focusin(function () {
 
+            $(".input-chat .fa-microphone").toggle("fast");
+            $(".input-chat .fa-paper-plane").toggle("fast");
+
+        })
+        .focusout(function () {
+
+            $(".input-chat .fa-microphone").toggle("fast");
+            $(".input-chat .fa-paper-plane").toggle("fast");
+
+        });
 
 
 
@@ -113,3 +143,4 @@ $(function () {
 
 
 })
+/* end document ready */
