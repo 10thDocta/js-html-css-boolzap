@@ -37,13 +37,13 @@
 
                             <!-- Dropdown Menu -->
                             <ul class="dropdown hide">
-                                <li class="dropdown__item"><a href="">Nuovo gruppo</a></li>
-                                <li class="dropdown__item"><a href="">Crea una stanza</a></li>
-                                <li class="dropdown__item"><a href="">Profilo</a></li>
-                                <li class="dropdown__item"><a href="">Archiviate</a></li>
-                                <li class="dropdown__item"><a href="">Importanti</a></li>
-                                <li class="dropdown__item"><a href="">Impostazioni</a></li>
-                                <li class="dropdown__item"><a href="">Disconnetti</a></li>
+                                <li id="new-group" class="dropdown__item"><a href="#">Nuovo gruppo</a></li>
+                                <li id="new-chat" class="dropdown__item"><a href="#">Crea una stanza</a></li>
+                                <li class="dropdown__item"><a href="#">Profilo</a></li>
+                                <li class="dropdown__item"><a href="#">Archiviate</a></li>
+                                <li class="dropdown__item"><a href="#">Importanti</a></li>
+                                <li class="dropdown__item"><a href="#">Impostazioni</a></li>
+                                <li class="dropdown__item"><a href="#">Disconnetti</a></li>
                             </ul>
 
                         </li>
@@ -310,7 +310,7 @@
         </div>
         <!-- /Left -->
 
-
+        <!-- ************************************** -->
 
         <!-- Right -->
         <div class="right">
@@ -372,25 +372,54 @@
 
 
 
-
-        <div class="template">
+        <!-- Clone Template -->
+        <div class="template-chat__baloon">
             <div class="my-message">
             </div>
             <div class="other-message">
             </div>
         </div>
 
+        <div class="template-chat__archive">
+            <div class="single-chat">
+                <div class="single-chat_left">
+                    <div class="single-chat_img">
+                    </div>
+                    <div class="single-chat_preview">
+                        <div class="chat-title"></div>
+                        <div class="text-preview"></div>
+                    </div>
+                </div>
+                <div class="single-chat_status">
+                    <div class="chat-last-update"></div>
+                    <div class="mute"><i class="fas fa-volume-mute"></i></div>
+                </div>
 
-
+            </div>
+        </div>
 
     </main>
+
 
 
     <!-- FOOTER -->
     <footer></footer>
 
+
+    <!-- Modale pop-up -->
+    <div class="modal_full_page">
+        <div class="modal_box">
+            <h3>Seleziona un contatto</h3>
+            <input type="text" name="modal_input" id="modal_input">
+            <button id="modal_btn__close">close</button>
+        </div>
+    </div>
+    <!-- /Modale pop-up -->
+
+
+
     <script src="js/script.js"></script>
-    <script src="js/test.js"></script>
+
 </body>
 
 </html>

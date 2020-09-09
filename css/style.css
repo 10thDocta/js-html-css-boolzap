@@ -42,6 +42,7 @@ i::before {
 
 input {
   padding: 0 10px;
+  cursor: text;
 }
 
 .menu-active {
@@ -417,6 +418,7 @@ main {
   padding: 10px;
   max-width: 40%;
   border-radius: 5px;
+  word-break: break-all;
 }
 
 .active-chat .my-message {
@@ -465,8 +467,30 @@ footer {
   background-color: #d4dbda;
 }
 
-/* ------ TEST ------ */
-.template {
+/* TEMPLATE */
+.template-chat__baloon,
+.template-chat__archive {
   display: none;
+}
+
+/* MODAL */
+.modal_full_page {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.modal_box {
+  margin: auto;
+  width: 50%;
+  height: 50%;
+  background-color: #fff;
+  border: 1px solid;
+  -webkit-box-shadow: 0px 0px 5px 4px #a1a1a1;
+  box-shadow: 0px 0px 5px 4px #a1a1a1;
 }
 /*# sourceMappingURL=style.css.map */
