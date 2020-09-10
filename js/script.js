@@ -45,10 +45,19 @@ $(function () {
     });
 
 
+    const getTime = () => {
+        var date = new Date();
+        var hours = (date.getHours() < 10 ? "0" : "") + date.getHours();
+        var minute = (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
+        return `${hours}:${minute}`;
+    }
+
     // funzione per ottenere il dato inserito dall'utente
     const userMessage = inputValue => {
         var element = $(".template-chat__baloon > div.my-message").clone();
         element.prepend(inputValue);
+        element.find(".time-message").text(getTime());
+
         $(".active-chat").append(element);
         $("#input-chat__input").val("");
         $(".chat-info__member").html("Sta scrivendo...");
@@ -62,17 +71,14 @@ $(function () {
         var rispostaAutomatica = setTimeout(function () {
             var otherElement = $(".template-chat__baloon > div.other-message").clone();
             otherElement.prepend("Ciao, come stai?");
+            otherElement.find(".time-message").text(getTime());
             $(".active-chat").append(otherElement);
 
             // codice per scrollare automaticamente in basso
             $(".active-chat").animate({ scrollTop: $(".active-chat").height() }, "fast");
 
             // codice per stampare la data dell'ultimo messaggio
-            var date = new Date();
-            var hours = (date.getHours() < 10 ? "0" : "") + date.getHours();
-            var minute = (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
-
-            $(".chat-info__member").html(`Ultimo accesso alle ${hours}:${minute}`);
+            $(".chat-info__member").html(`Ultimo accesso alle ${getTime()}`);
 
         }, 2000);
     }
@@ -85,9 +91,26 @@ $(function () {
 
         // tramite il metodo .filter() specifico quale selettore deve andare a cercare, in questo caso ".chat-group .chat-title"
         $(".chat-group .chat-title").filter(function () {
-            // specifico che deve eseguire il .toggle() sull'elemento ancestrale, tramite .parents(), solamente se quello che c'è tra le parentesì è vero
-            $(this).parents(".single-chat").toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            // specifico che deve eseguire il .toggle() sull'elemento ancestrale, tramite .parents(), solamente se quello che c'è tra le parentesì di toggle è falso
+            $(this).parents(".single-chat").toggle($(this).text().toLowerCase().includes(value))
         });
+    });
+
+    // codice per la barra di ricerca nella chat attiva
+    // ad ogni tasto rilasciato 
+    $("#search-bar_active-chat__input").on("input", function () {
+        // va a leggere il valore dell'input (trasformato in minuscolo)
+
+        var value = $(this).val().toLowerCase();
+
+        // tramite il metodo .filter() specifico quale selettore deve andare a cercare, in questo caso ".chat-group .chat-title"
+        $(".active-chat *").filter(function () {
+            // specifico che deve eseguire il .toggle() sull'elemento ancestrale, tramite .parents(), solamente se quello che c'è tra le parentesì è vero
+            $(this).not(".time-message").toggle($(this).text().toLowerCase().includes(value))
+        });
+
+
+
     });
 
 
@@ -143,10 +166,8 @@ $(function () {
                 chatTemplate.find(".single-chat_preview .text-preview").text("Random message");
 
                 // codice per aggiornare inserire l'orario di creazione
-                var date = new Date();
-                var hours = (date.getHours() < 10 ? "0" : "") + date.getHours();
-                var minute = (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
-                chatTemplate.find(".single-chat_status .chat-last-update").text(`${hours}:${minute}`);
+
+                chatTemplate.find(".single-chat_status .chat-last-update").text(`${getTime()}`);
 
                 $(".chat-group").prepend(chatTemplate);
 
@@ -175,16 +196,11 @@ $(function () {
             $("#user-menu > a > i").toggleClass("menu-active");
         }
     });
-
-
-
-
-
-
     /* ------ END TEST ------ */
 
-
-
+    $(".chat-controls i.fas.fa-search").click(function () {
+        $(".chat-controls .chat-search-box").toggle();
+    });
 
 
 
