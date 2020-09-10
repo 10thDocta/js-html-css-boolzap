@@ -189,6 +189,7 @@ main {
 
 .notification_img {
   i {
+    font-size: 1.6rem;
     color: #9de1fe;
     background-color: white;
     width: 50px;
@@ -383,6 +384,10 @@ main {
     width: max-content;
     border-radius: 5px;
     word-break: break-all;
+
+    &:hover .chat-message__baloon-menu {
+      display: block;
+    }
   }
 
   .my-message {
@@ -401,6 +406,21 @@ main {
     font-size: 1rem;
     text-align: right;
     color: grey;
+  }
+}
+
+.chat-message__baloon-menu {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  i.fas.fa-chevron-down {
+    color: grey;
+    position: relative;
+    top: -4px;
+    right: 5px;
+    font-size: 1.2rem;
   }
 }
 
@@ -489,7 +509,7 @@ footer {
 }
 
 /* -- MEDIA QUERY -- */
-@media only screen and (min-width: 1300px) {
+@media only screen and (min-width: 1500px) {
   html {
     font-size: 12px;
   }

@@ -54,7 +54,8 @@ $(function () {
 
     // funzione per ottenere il dato inserito dall'utente
     const userMessage = inputValue => {
-        var element = $(".template-chat__baloon > div.my-message").clone();
+        var element = $(".template-chat__baloon > div.chat-message").clone();
+        element.addClass("my-message");
         element.prepend(inputValue);
         element.find(".time-message").text(getTime());
 
@@ -69,7 +70,9 @@ $(function () {
     // funzione per generare un messaggio dopo aver stampato a video quello dell'utente
     const autoMessage = () => {
         var rispostaAutomatica = setTimeout(function () {
-            var otherElement = $(".template-chat__baloon > div.other-message").clone();
+            var otherElement = $(".template-chat__baloon > div.chat-message").clone();
+            otherElement.addClass("other-message");
+
             otherElement.prepend("Ciao, come stai?");
             otherElement.find(".time-message").text(getTime());
             $(".active-chat").append(otherElement);
@@ -178,9 +181,7 @@ $(function () {
 
 
 
-    /* ------------------------------------------------ */
-    /* ------ TEST ------ */
-
+    // codice per chiudere la modale al click sul bottone chiudi
     $("#modal_btn__close").on("click", function () {
 
         if ($(".modal_full_page").css("display") == "flex") {
@@ -189,18 +190,52 @@ $(function () {
     });
 
 
-    $(".dropdown__item").on("click", function () {
+    $(".user-controls .dropdown__item").on("click", function () {
 
         if ($(this).parent(".dropdown").css("display") != "none") {
             $(this).parent(".dropdown").toggleClass("hide");
             $("#user-menu > a > i").toggleClass("menu-active");
         }
     });
-    /* ------ END TEST ------ */
 
+    // codice per
     $(".chat-controls i.fas.fa-search").click(function () {
         $(".chat-controls .chat-search-box").toggle();
     });
+
+
+
+    /* ------------------------------------------------ */
+    /* ------ TEST ------ */
+
+    $(".chat-message__baloon-menu i.fas.fa-chevron-down").on("click", function () {
+        $(this).next().toggleClass("hide");
+
+    });
+
+    $(".chat-message__baloon-menu .dropdown").on("mouseleave", function () {
+        $(this).toggleClass("hide");
+    });
+
+    $("#delete_message a").on("click", function () {
+        $(this).parents(".chat-message").remove();
+    });
+
+    /* ------ END TEST ------ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
