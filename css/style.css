@@ -53,6 +53,10 @@ input {
   cursor: text;
 }
 
+.active {
+  display: block;
+}
+
 .menu-active {
   border-radius: 50%;
   background-color: #d5d5d5;
@@ -404,6 +408,12 @@ main {
   position: relative;
 }
 
+/* ------------------- CHAT ------------------ */
+.chat-box {
+  height: calc(100% - 54px - 55px);
+  background-color: red;
+}
+
 /* Active Chat */
 .active-chat {
   display: -webkit-box;
@@ -415,8 +425,9 @@ main {
           flex-direction: column;
   position: relative;
   overflow-y: auto;
-  height: calc(100% - 54px - 55px);
+  height: 100%;
   font-size: 1.4rem;
+  background-color: #249397;
 }
 
 .active-chat > div:first-child {
@@ -582,5 +593,9 @@ footer {
   html {
     font-size: 12px;
   }
+}
+
+.active-archieve-chat {
+  background-color: #ebebeb;
 }
 /*# sourceMappingURL=style.css.map */
