@@ -25,9 +25,9 @@ $(function () {
             var inputValue = $("#input-chat__input").val();
 
             if (inputValue != "") {
-
-                userMessage(inputValue);
-                autoMessage();
+                var activeChatId = $(".active-chat.active").attr("data-contatto");
+                userMessage(inputValue, activeChatId);
+                autoMessage(activeChatId);
             }
         }
     });
@@ -39,46 +39,114 @@ $(function () {
         var inputValue = $("#input-chat__input").val();
 
         if (inputValue != "") {
-            userMessage(inputValue);
-            autoMessage();
+            var activeChatId = $(".active-chat.active").attr("data-contatto");
+            userMessage(inputValue, activeChatId);
+            autoMessage(activeChatId);
         }
     });
 
+
+    const spliceText = arr => {
+        if (arr.length > 23) {
+            return `${arr.slice(0, 22)}...`;
+        } else {
+            return arr;
+        }
+    };
 
     const getTime = () => {
         var date = new Date();
         var hours = (date.getHours() < 10 ? "0" : "") + date.getHours();
         var minute = (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
         return `${hours}:${minute}`;
-    }
+    };
+
 
     // funzione per ottenere il dato inserito dall'utente
-    const userMessage = inputValue => {
+    const userMessage = (inputValue, activeChatId) => {
         var element = $(".template-chat__baloon > div.chat-message").clone();
         element.addClass("my-message");
-        element.prepend(inputValue);
-        element.find(".time-message").text(getTime());
+        element.find(".chat-message__text").text(inputValue);
+        element.find(".chat-message__time").text(getTime());
 
-        $(".active-chat.active").append(element);
+        $(".chat-box .active-chat[data-contatto=" + activeChatId + "]").append(element);
 
-        // $(".active-chat").append(element);
         $("#input-chat__input").val("");
         $(".chat-info__member").html("Sta scrivendo...");
+
+        //inserire il testo e orario della risposta nella colonna di sinistra
+        $(".chat-group .single-chat[data-contatto=" + activeChatId + "]").find(".text-preview").text(`${spliceText(inputValue)}`);
+
+        $(".chat-group .single-chat[data-contatto=" + activeChatId + "]").find(".chat-last-update").text(`${getTime()}`);
 
         // metodo per scrollare automaticamente in basso
         $(".active-chat.active").animate({ scrollTop: $(".active-chat.active").prop("scrollHeight") }, "fast");
     }
 
+
     // funzione per generare un messaggio dopo aver stampato a video quello dell'utente
-    const autoMessage = () => {
+    const autoMessage = activeChatId => {
         var rispostaAutomatica = setTimeout(function () {
             var otherElement = $(".template-chat__baloon > div.chat-message").clone();
             otherElement.addClass("other-message");
 
-            otherElement.prepend("Ciao, come stai?");
-            otherElement.find(".time-message").text(getTime());
+            function randomResponse() {
+                var randomNumber = Math.floor(Math.random() * 10) + 1;
+                var response = "";
 
-            $(".active-chat.active").append(otherElement);
+                switch (randomNumber) {
+                    case 1:
+                        response = "Ciao, come stai?"
+                        break;
+
+                    case 2:
+                        response = "How about second breakfast?"
+                        break;
+
+                    case 3:
+                        response = "Fly you fools!"
+                        break;
+
+                    case 4:
+                        response = "Dove stiamo andando non c'è bisogno di strade"
+                        break;
+
+                    case 5:
+                        response = "No, I am your father"
+                        break;
+
+                    case 6:
+                        response = "Ray, if someone asks you if you're a god, you say YES!"
+                        break;
+
+                    case 7:
+                        response = "Now I am become Death, the destroyer of worlds."
+                        break;
+
+                    case 8:
+                        response = "These aren't the droids you're looking for."
+                        break;
+
+                    case 9:
+                        response = "With great power there must also come – great responsibility."
+                        break;
+
+                    case 10:
+                        response = "Three rings for the Elven kings under the sky, seven for the Dwarf lords in their halls of stone, nine for the mortal men doomed to die, one for the Dark Lord on his dark throne, in the land of Mordor where the shadows lie. One ring to rule them all, one ring to find them, one ring the bring them all, and in the darkness bind them. In the land of Mordor where the shadows lie."
+                        break;
+
+                    default:
+                        break;
+                }
+                return response;
+            }
+
+            var tempResponse = randomResponse();
+
+            otherElement.find(".chat-message__text").text(tempResponse);
+            otherElement.find(".chat-message__time").text(getTime());
+
+            $(".chat-box .active-chat[data-contatto=" + activeChatId + "]").append(otherElement);
 
             // codice per scrollare automaticamente in basso
             $(".active-chat.active").animate({ scrollTop: $(".active-chat.active").prop("scrollHeight") }, "fast");
@@ -86,23 +154,16 @@ $(function () {
             // codice per stampare la data dell'ultimo messaggio
             $(".chat-info__member").html(`Ultimo accesso alle ${getTime()}`);
 
+            //codice per inserire il testo e orario della risposta nella colonna di sinistra
+            $(".chat-group .single-chat[data-contatto=" + activeChatId + "]").find(".text-preview").text(`${spliceText(tempResponse)}`);
 
-
-
-            var activeChatId = $(".active-chat.active").attr("data-contatto");
             $(".chat-group .single-chat[data-contatto=" + activeChatId + "]").find(".chat-last-update").text(`${getTime()}`);
-
-
-
-
-
-
-
 
         }, 2000);
     }
 
-    // codice per la barra di ricerca
+
+    // barra di ricerca archivio chat
     // ad ogni tasto rilasciato 
     $("#search-bar__input").keyup(function () {
         // va a leggere il valore dell'input (trasformato in minuscolo)
@@ -115,7 +176,8 @@ $(function () {
         });
     });
 
-    // codice per la barra di ricerca nella chat attiva
+
+    // barra di ricerca nella chat attiva
     // ad ogni tasto rilasciato 
     $("#search-bar_active-chat__input").on("input", function () {
         // va a leggere il valore dell'input (trasformato in minuscolo)
@@ -123,12 +185,10 @@ $(function () {
         var value = $(this).val().toLowerCase();
 
         // tramite il metodo .filter() specifico quale selettore deve andare a cercare, in questo caso ".chat-group .chat-title"
-        $(".active-chat *").filter(function () {
-            // specifico che deve eseguire il .toggle() sull'elemento ancestrale, tramite .parents(), solamente se quello che c'è tra le parentesì è vero
-            $(this).not(".time-message").toggle($(this).text().toLowerCase().includes(value))
+        $(".active-chat.active .chat-message__text").filter(function () {
+            // specifico che deve eseguire il .toggle() sull'elemento, solamente se quello che c'è tra le parentesì è vero
+            $(this).parent().toggle($(this).text().toLowerCase().includes(value));
         });
-
-
 
     });
 
@@ -150,8 +210,6 @@ $(function () {
 
 
 
-
-
     /* ------ Codice per creare una nuova chat ------ */
 
     // al click su "Nuovo Gruppo" o "Crea una stanza" mostro la modale
@@ -162,28 +220,25 @@ $(function () {
         $(".modal_full_page").css("display", "flex");
     });
 
-    var x = 0;
+    var counter = 0;
 
     $("#modal_input").keyup(function () {
         if (event.which === 13) {
             var modalInput = $("#modal_input").val();
-            console.log(modalInput);
 
             if (modalInput != "") {
-                x++;
+                counter++;
                 $(".modal_full_page").css("display", "none");
 
                 var chatArchieveTemplate = $(".template-chat__archive > div.single-chat").clone();
 
                 // manipolazione elemento
                 // Per manipolare gli elementi del DOM dentro all’elemento clonato con .clone(), possiamo usare il metodo .find(“classe o #”), che va a cercare l’elemento corrispondente. Solo dopo possiamo andare a manipolarne il contenuto.
-
                 chatArchieveTemplate.find(".single-chat_left").parent().addClass("active-archieve-chat");
-                chatArchieveTemplate.find(".single-chat_left").parent().attr("data-contatto", x);
+                chatArchieveTemplate.find(".single-chat_left").parent().attr("data-contatto", counter);
 
-
-                chatArchieveTemplate.find(".single-chat_img").html(`<img src="https://picsum.photos/2${x}0" alt="">`);
-                $(".chat-bar .chat-info__img img").attr("src", `https://picsum.photos/2${x}0`);
+                chatArchieveTemplate.find(".single-chat_img").html(`<img src="https://picsum.photos/2${counter}0" alt="">`);
+                $(".chat-bar .chat-info__img img").attr("src", `https://picsum.photos/2${counter}0`);
 
                 chatArchieveTemplate.find(".single-chat_preview .chat-title").text(modalInput);
                 $(".chat-bar .chat-info__title").text(modalInput);
@@ -204,8 +259,8 @@ $(function () {
                 // codice per creare una nuova chat a DESTRA
                 var newChatTemplate = $(".template-new-chat > div.active-chat").clone();
 
-                newChatTemplate.addClass(`active ${x}`);
-                newChatTemplate.attr("data-contatto", x);
+                newChatTemplate.addClass(`active ${counter}`);
+                newChatTemplate.attr("data-contatto", counter);
 
                 $(".chat-box").each(function () {
                     $(this).children(".active-chat").removeClass("active");
@@ -219,9 +274,7 @@ $(function () {
     });
 
 
-
-
-    // codice per chiudere la modale al click sul bottone chiudi
+    //chiudere la modale al click sul bottone chiudi
     $("#modal_btn__close").on("click", function () {
 
         if ($(".modal_full_page").css("display") == "flex") {
@@ -229,7 +282,8 @@ $(function () {
         }
     });
 
-    // codice per aprire e chiudere il menu dell'utente e mostrare e nascondere il tondo grigio attorno ai 3 puntini
+
+    //aprire e chiudere il menu dell'utente e mostrare e nascondere il tondo grigio attorno ai 3 puntini
     $(".user-controls .dropdown__item").on("click", function () {
 
         if ($(this).parent(".dropdown").css("display") != "none") {
@@ -238,19 +292,16 @@ $(function () {
         }
     });
 
-    // codice per mostrare il menu di ogni messaggio, al click sulla freccia in basso
+
+    // mostrare il menu di ogni messaggio, al click sulla freccia in basso
     $(".chat-controls i.fas.fa-search").click(function () {
         $(".chat-controls .chat-search-box").toggle();
     });
 
 
-
-    /* ------------------------------------------------ */
-    /* ------ TEST ------ */
-
+    // interazione con baloon-menu in ogni singolo messaggio della chat
     $(document).on("click", ".chat-message__baloon-menu i.fas.fa-chevron-down", function () {
         $(this).next().toggleClass("hide");
-
     });
 
     $(document).on("mouseleave", ".chat-message__baloon-menu .dropdown", function () {
@@ -259,9 +310,17 @@ $(function () {
 
     $(document).on("click", "#delete_message a", function () {
         $(this).parents(".chat-message").remove();
+
+        /* TEST */
+        var lastText = $(".active-chat.active .chat-message").last().children(".chat-message__text").text();
+
+        var activeChatId = $(".active-chat.active").attr("data-contatto");
+
+        $(".chat-group .single-chat[data-contatto=" + activeChatId + "]").find(".text-preview").text(`${spliceText(lastText)}`);
+        /* /TEST */
+
     });
 
-    /* ------ END TEST ------ */
 
 
 
@@ -272,7 +331,6 @@ $(function () {
 
         $(this).addClass("active-archieve-chat");
 
-        // test
         var dataContatto = $(this).attr("data-contatto");
 
         $(".chat-box").each(function () {
@@ -285,14 +343,9 @@ $(function () {
         var name = $(this).find(".chat-title").text();
         var time = $(this).find(".chat-last-update").text();
 
-
-
         $(".chat-bar .chat-info__img img").attr("src", img);
         $(".chat-bar .chat-info__title").text(name);
         $(".chat-bar .chat-info__member").text(`Ultimo accesso alle ${time}`);
-
-
-
     });
 
 
@@ -309,7 +362,6 @@ $(function () {
 
 
 
-    // test
 
 
 

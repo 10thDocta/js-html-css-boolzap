@@ -281,8 +281,9 @@ main {
   }
 
   .text-preview {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     color: rgb(63, 62, 62);
+    padding-right: 5px;
   }
 }
 
@@ -387,8 +388,7 @@ main {
     margin-bottom: 20px;
   }
 
-  .my-message,
-  .other-message {
+  .chat-message {
     position: relative;
     margin-top: 6px;
     padding: 10px 15px 5px 10px;
@@ -396,9 +396,18 @@ main {
     width: max-content;
     border-radius: 5px;
     word-break: break-all;
+    hyphens: auto;
 
     &:hover .chat-message__baloon-menu {
       display: block;
+    }
+
+    .chat-message__time {
+      margin-top: 3px;
+      margin-right: -8px;
+      font-size: 1rem;
+      text-align: right;
+      color: grey;
     }
   }
 
@@ -410,14 +419,6 @@ main {
   .other-message {
     left: 4%;
     background-color: white;
-  }
-
-  .time-message {
-    margin-top: 3px;
-    margin-right: -8px;
-    font-size: 1rem;
-    text-align: right;
-    color: grey;
   }
 }
 
