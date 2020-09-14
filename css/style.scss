@@ -359,6 +359,12 @@ main {
   }
 }
 
+.chat-search-box {
+  #search-bar_active-chat__input {
+    padding: 3px;
+  }
+}
+
 #chat-menu {
   position: relative;
 }
@@ -367,7 +373,6 @@ main {
 
 .chat-box {
   height: calc(100% - 54px - 55px);
-  background-color: cadetblue;
 }
 
 /* Active Chat */

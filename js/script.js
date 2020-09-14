@@ -177,6 +177,13 @@ $(function () {
     });
 
 
+    // mostrare la barra di ricerca nella chat attiva
+    $(".chat-controls i.fas.fa-search").click(function () {
+        $(".chat-controls .chat-search-box").toggle();
+        $(".chat-controls #search-bar_active-chat__input").focus();
+
+    });
+
     // barra di ricerca nella chat attiva
     // ad ogni tasto rilasciato 
     $("#search-bar_active-chat__input").on("input", function () {
@@ -301,12 +308,6 @@ $(function () {
     });
 
 
-    // mostrare il menu di ogni messaggio, al click sulla freccia in basso
-    $(".chat-controls i.fas.fa-search").click(function () {
-        $(".chat-controls .chat-search-box").toggle();
-    });
-
-
     // interazione con baloon-menu in ogni singolo messaggio della chat
     $(document).on("click", ".chat-message__baloon-menu i.fas.fa-chevron-down", function () {
         $(this).next().toggleClass("hide");
@@ -316,6 +317,7 @@ $(function () {
         $(this).toggleClass("hide");
     });
 
+    // eliminazione singolo messaggio nella chat attiva 
     $(document).on("click", "#delete_message a", function () {
         $(this).parents(".chat-message").remove();
 
