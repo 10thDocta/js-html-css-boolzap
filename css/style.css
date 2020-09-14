@@ -412,7 +412,7 @@ main {
 /* ------------------- CHAT ------------------ */
 .chat-box {
   height: calc(100% - 54px - 55px);
-  background-color: red;
+  background-color: cadetblue;
 }
 
 /* Active Chat */

@@ -220,58 +220,66 @@ $(function () {
         $(".modal_full_page").css("display", "flex");
     });
 
+    // funzione per la creazione di una nuova chat
+    const createNewChat = (counter, modalInput = `Chat ${counter}`) => {
+
+        $(".modal_full_page").css("display", "none");
+
+        var chatArchieveTemplate = $(".template-chat__archive > div.single-chat").clone();
+
+        // manipolazione elemento
+        // Per manipolare gli elementi del DOM dentro all’elemento clonato con .clone(), possiamo usare il metodo .find(“classe o #”), che va a cercare l’elemento corrispondente. Solo dopo possiamo andare a manipolarne il contenuto.
+        chatArchieveTemplate.find(".single-chat_left").parent().addClass("active-archieve-chat");
+        chatArchieveTemplate.find(".single-chat_left").parent().attr("data-contatto", counter);
+
+        chatArchieveTemplate.find(".single-chat_img").html(`<img src="https://picsum.photos/2${counter}0" alt="">`);
+        $(".chat-bar .chat-info__img img").attr("src", `https://picsum.photos/2${counter}0`);
+
+        chatArchieveTemplate.find(".single-chat_preview .chat-title").text(modalInput);
+        $(".chat-bar .chat-info__title").text(modalInput);
+
+        chatArchieveTemplate.find(".single-chat_preview .text-preview").text("Random message");
+
+
+        // codice per aggiornare inserire l'orario di creazione
+        chatArchieveTemplate.find(".single-chat_status .chat-last-update").text(`${getTime()}`);
+        $(".chat-bar .chat-info__member").text(`Ultimo accesso alle ${getTime()}`);
+
+
+        $(".chat-group").find(".active-archieve-chat").removeClass("active-archieve-chat");
+
+        $(".chat-group").prepend(chatArchieveTemplate);
+
+
+        // codice per creare una nuova chat a DESTRA
+        var newChatTemplate = $(".template-new-chat > div.active-chat").clone();
+
+        newChatTemplate.addClass(`active ${counter}`);
+        newChatTemplate.attr("data-contatto", counter);
+
+        $(".chat-box").each(function () {
+            $(this).children(".active-chat").removeClass("active");
+            $(this).children(".active-chat").not(".active").hide();
+        });
+
+        $(".chat-box").prepend(newChatTemplate);
+    }
+
+
     var counter = 0;
 
+    //al click su invio nella modale creo una nuova chat
     $("#modal_input").keyup(function () {
         if (event.which === 13) {
             var modalInput = $("#modal_input").val();
 
             if (modalInput != "") {
-                counter++;
-                $(".modal_full_page").css("display", "none");
-
-                var chatArchieveTemplate = $(".template-chat__archive > div.single-chat").clone();
-
-                // manipolazione elemento
-                // Per manipolare gli elementi del DOM dentro all’elemento clonato con .clone(), possiamo usare il metodo .find(“classe o #”), che va a cercare l’elemento corrispondente. Solo dopo possiamo andare a manipolarne il contenuto.
-                chatArchieveTemplate.find(".single-chat_left").parent().addClass("active-archieve-chat");
-                chatArchieveTemplate.find(".single-chat_left").parent().attr("data-contatto", counter);
-
-                chatArchieveTemplate.find(".single-chat_img").html(`<img src="https://picsum.photos/2${counter}0" alt="">`);
-                $(".chat-bar .chat-info__img img").attr("src", `https://picsum.photos/2${counter}0`);
-
-                chatArchieveTemplate.find(".single-chat_preview .chat-title").text(modalInput);
-                $(".chat-bar .chat-info__title").text(modalInput);
-
-                chatArchieveTemplate.find(".single-chat_preview .text-preview").text("Random message");
-
-
-                // codice per aggiornare inserire l'orario di creazione
-                chatArchieveTemplate.find(".single-chat_status .chat-last-update").text(`${getTime()}`);
-                $(".chat-bar .chat-info__member").text(`Ultimo accesso alle ${getTime()}`);
-
-
-                $(".chat-group").find(".active-archieve-chat").removeClass("active-archieve-chat");
-
-                $(".chat-group").prepend(chatArchieveTemplate);
-
-
-                // codice per creare una nuova chat a DESTRA
-                var newChatTemplate = $(".template-new-chat > div.active-chat").clone();
-
-                newChatTemplate.addClass(`active ${counter}`);
-                newChatTemplate.attr("data-contatto", counter);
-
-                $(".chat-box").each(function () {
-                    $(this).children(".active-chat").removeClass("active");
-                    $(this).children(".active-chat").not(".active").hide();
-                });
-
-                $(".chat-box").prepend(newChatTemplate);
-
+                ++counter;
+                createNewChat(counter, modalInput);
             }
         }
     });
+    /* ------ /Codice per creare una nuova chat ------ */
 
 
     //chiudere la modale al click sul bottone chiudi
@@ -322,8 +330,6 @@ $(function () {
     });
 
 
-
-
     // codice sul cick a SINISTRA in ogni singola chat "single-chat"
     $(document).on("click", ".single-chat", function () {
 
@@ -351,23 +357,11 @@ $(function () {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    // all'apertura, creo automaticamente 5 nuove chat
+    for (let i = 0; i < 5; i++) {
+        counter++;
+        createNewChat(counter);
+    }
 
 
 })
